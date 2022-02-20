@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { createPortal } from "react-dom";
+import LinkFrame from "./components/LinkFrame";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <IFrame>
+      <MyComponent />
+    </IFrame>
   );
 }
 
-export default App;
+function IFrame({ children }) {
+  const [ref, setRef] = useState();
+  const container = ref?.contentDocument?.body;
+
+  return (
+    <iframe className="iframe" title="iframe" ref={setRef} name="targetIframe">
+      {container && createPortal(children, container)}
+    </iframe>
+  );
+}
+
+function MyComponent() {
+  return (
+    <>
+      <h1>Hello CodeSandbox</h1>
+      <a href="http://localhost:8080/index.html?profile=Responsive" target="_self">ga naar mendix app</a>
+    </>
+  );
+}
